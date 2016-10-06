@@ -21,11 +21,12 @@ public class BallControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-        dir = new Vector2 (Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+        //dir = new Vector2 (Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
+		dir = new Vector2 (Input.acceleration.x, Input.acceleration.y);
 
-        if (Input.GetAxis("Horizontal") !=0 || Input.GetAxis("Vertical") != 0)
-        {
+        //if (Input.GetAxis("Horizontal") !=0 || Input.GetAxis("Vertical") != 0)
+        //{
             MoveBall(dir);
-        }
+        //}
     }
 }
