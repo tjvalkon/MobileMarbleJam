@@ -3,30 +3,25 @@ using System.Collections;
 
 public class TouchControl : MonoBehaviour {
 
-    Vector3 target;
+    Vector2 target;
     Vector3 position;
     public float speed = 2f;
-    Collider2D buttonCollider;
+    Collider2D hit;
+    SelectionManager selectionManager;
+    CreateTile createTile;
 
     // Use this for initialization
     void Start () {
+        selectionManager = GameObject.Find("SelectionManager").GetComponent<SelectionManager>();
+        createTile = GameObject.Find("CreateTile").GetComponent<CreateTile>();
         target = transform.position;
         position = target;
-        //buttonCollider = GetComponent<Collider2D>();
-        //buttonCollider.enabled = false;
     }
 
     void Move(Vector2 position)
     {
         transform.position = position;
     }
-
-    /*
-    void DisableButtonCollider()
-    {
-        buttonCollider.enabled = false;
-    }
-    */
 
     public Vector2 TouchPosition()
     {
@@ -35,43 +30,78 @@ public class TouchControl : MonoBehaviour {
 
     void Update () {
 
-        if (Input.GetKey(KeyCode.Mouse0))
+        //Mouse control
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            //buttonCollider.enabled = true;
             target = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            position = target;
-            Move(position);
-            Debug.Log(position);
+            //position = target;
+            //Move(position);
+
+            hit = Physics2D.OverlapPoint(target);
+
+            //jos osutaan nappiin
+            if (hit != null && hit.GetComponent<ButtonTile>() != null)
+            {
+                hit.GetComponent<ButtonTile>().TouchButton();
+            }
+            // jos osutaan johonkin muuhun kuin nappiin
+            else if (hit != null && hit.GetComponent<ButtonTile>() == null && hit.gameObject.tag != "Boundary")
+            {
+                if (selectionManager.GetButtonTile() != null)
+                {
+                    Destroy(hit.gameObject);
+                    createTile.CreateTileOnPosition(hit.transform.position);
+                }
+                else if (selectionManager.GetButtonTile() == null)
+                {
+                    Destroy(hit.gameObject);
+                    createTile.CreateTileOnPosition(hit.transform.position);
+                }
+            }
         }
 
-        Ray2D ray = 
-        RaycastHit hit;
-        /*
-        if (position == target)
-        {
-            Invoke("DisableButtonCollider", 0.1f);
-            //buttonCollider.enabled = false;
-        }
-
-        position = Vector2.Lerp(position, target, speed * Time.deltaTime);
-
-        if (position != target)
-        {
-            Move(position);
-        }
-        
+        //Touch control
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
-            Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-            RaycastHit hit;
+            target = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+            //position = target;
+            //Move(position);
+            hit = Physics2D.OverlapPoint(target);
 
-            if (Physics.Raycast(ray, out hit))
+            //jos osutaan nappiin
+            if (hit != null && hit.GetComponent<ButtonTile>() != null)
             {
-                Move(hit.point);
-                //transform.position = hit.point;
+                hit.GetComponent<ButtonTile>().TouchButton();
+            }
+            // jos osutaan johonkin muuhun kuin nappiin
+            else if (hit != null && hit.GetComponent<ButtonTile>() == null && hit.gameObject.tag != "Boundary")
+            {
+                if (selectionManager.GetButtonTile() != null)
+                {
+                    Destroy(hit.gameObject);
+                    createTile.CreateTileOnPosition(hit.transform.position);
+                }
+                else if (selectionManager.GetButtonTile() == null)
+                {
+                    Destroy(hit.gameObject);
+                    createTile.CreateTileOnPosition(hit.transform.position);
+                }
+            }
+        }
+        /*
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            target = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+            position = target;
+            Move(position);
+            hit = Physics2D.OverlapPoint(transform.position);
+            if (hit != null && Input.touchCount > 0 && hit.GetComponent<ButtonTile>() != null)
+            {
+                hit.GetComponent<ButtonTile>().TouchButton();
             }
         }
         */
-    }
 
+    }
+        
 }

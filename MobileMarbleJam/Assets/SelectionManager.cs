@@ -3,6 +3,7 @@ using System.Collections;
 
 public class SelectionManager : MonoBehaviour {
     ButtonTile selected = null;
+    //public bool buttonIsSelected;
 
     public void SetSelected(ButtonTile button)
     {
@@ -11,6 +12,11 @@ public class SelectionManager : MonoBehaviour {
             selected.DeSelectButton();
         }
         selected = button;
+    }
+
+    public ButtonTile GetButtonTile()
+    {
+        return selected;
     }
 
 }

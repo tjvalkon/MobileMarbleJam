@@ -3,8 +3,7 @@ using System.Collections;
 
 public class ButtonTile : MonoBehaviour {
 
-    public enum TileType { ConcreteWall, ConcreteFloor, Sand, Grass };
-    public TileType tileType;
+    public CreateTile.TileType tileType;
     public Color selectedColor;
     SpriteRenderer spriteRenderer;
     Color defaultColor;
@@ -12,7 +11,7 @@ public class ButtonTile : MonoBehaviour {
     SelectionManager selectionManager;
     TouchControl touchControl;
     CreateTile createTile;
-    Vector2 touchPosition;
+
 
     // Use this for initialization
     void Start () {
@@ -20,50 +19,35 @@ public class ButtonTile : MonoBehaviour {
         selectionManager = GameObject.Find("SelectionManager").GetComponent<SelectionManager>();
         spriteRenderer = GetComponent<SpriteRenderer>();
         defaultColor = spriteRenderer.color;
-        createTile = GameObject.Find("TouchControls").GetComponent<CreateTile>();
+        createTile = GameObject.Find("CreateTile").GetComponent<CreateTile>();
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        touchPosition = touchControl.TouchPosition();
-        //Debug.Log(touchPosition);
-
-        Collider2D hit = Physics2D.OverlapPoint(touchPosition);
-
-        if (hit != null && Input.GetKey(KeyCode.Mouse0))
-
-        {
-            if (!buttonSelected)
-            {
-                SelectButton();
-            }
-            else if (buttonSelected)
-            {
-                DeSelectButton();
-            }
-        }
-
     }
-    /*
-    void OnTriggerEnter2D()
+ 
+    public void TouchButton()
     {
         if (!buttonSelected)
         {
-        SelectButton();
+            selectionManager.SetSelected(this);
+            SelectButton();
 
-        } else if (buttonSelected)
+        }
+        else if (buttonSelected)
         {
+            selectionManager.SetSelected(null);
+            createTile.SetTileType(0);
             DeSelectButton();
         }
     }
-    */
+
     public void SelectButton()
     {
         buttonSelected = true; 
         spriteRenderer.color = selectedColor;
-        selectionManager.SetSelected(this);
-        //createTile.SetTile(tileType);
+        createTile.SetTileType(tileType);
     }
 
     public void DeSelectButton()
