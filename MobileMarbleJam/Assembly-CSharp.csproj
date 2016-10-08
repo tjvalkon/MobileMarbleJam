@@ -45,10 +45,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\BallBehaviour.cs" />
      <Compile Include="Assets\BallControl.cs" />
      <Compile Include="Assets\ButtonTile.cs" />
      <Compile Include="Assets\CreateTile.cs" />
+     <Compile Include="Assets\GameManager.cs" />
      <Compile Include="Assets\SelectionManager.cs" />
+     <Compile Include="Assets\StartGameButton.cs" />
      <Compile Include="Assets\TouchControl.cs" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
