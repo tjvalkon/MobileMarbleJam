@@ -8,12 +8,15 @@ public class CreateTile : MonoBehaviour {
     int selectedTile;
     public enum TileType { Empty, ConcreteWall, ConcreteFloor, Sand, Magma, Grass, Water, Start, Exit };
     SelectionManager selectionManager;
-    bool startTilePlaced;
-    bool exitTilePlaced;
+    GameManager gameManager;
+    public bool startTilePlaced;
+    public bool exitTilePlaced;
+    bool startButtonActivated;
  
     // Use this for initialization
     void Start () {
         selectionManager = GameObject.Find("SelectionManager").GetComponent<SelectionManager>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 		}
 
     public void SetTileType(TileType tileType)
@@ -41,22 +44,39 @@ public class CreateTile : MonoBehaviour {
 
     public void CreateTileOnPosition(Collider2D hit)
     {
-        Destroy(hit.gameObject);
-
         if (selectedTile == 7 && !startTilePlaced)
         {
+            if (hit.gameObject.tag == ("TileExit"))
+            {
+                exitTilePlaced = false;
+            }
+            Destroy(hit.gameObject);
+            startTilePlaced = true;
             var newTile = Instantiate(tile[selectedTile]);
             newTile.transform.position = hit.transform.position;
-            startTilePlaced = true;
         }
         if (selectedTile == 8 && !exitTilePlaced)
         {
-            var newTile = Instantiate(tile[selectedTile]);
-            newTile.transform.position = hit.transform.position;
+            if (hit.gameObject.tag == ("TileStart"))
+            {
+                startTilePlaced = false;
+            }
+            Destroy(hit.gameObject);
             exitTilePlaced = true;
+            var newTile = Instantiate(tile[selectedTile]);
+            newTile.transform.position = hit.transform.position;   
         }
         if (selectedTile != 8 && selectedTile != 7)
         {
+            if (hit.gameObject.tag == ("TileStart"))
+            {
+                startTilePlaced = false;
+            }
+            if (hit.gameObject.tag == ("TileExit"))
+            {
+                exitTilePlaced = false;
+            }
+            Destroy(hit.gameObject);
             var newTile = Instantiate(tile[selectedTile]);
             newTile.transform.position = hit.transform.position;
         }
@@ -64,6 +84,17 @@ public class CreateTile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+
+        if (!startButtonActivated && startTilePlaced && exitTilePlaced)
+        {
+            startButtonActivated = true;
+            gameManager.SetStartGameButtonActive();
+        }
+        if (startButtonActivated && !startTilePlaced || !exitTilePlaced)
+        {
+            startButtonActivated = false;
+            gameManager.SetStartGameButtonInactive();
+        }
+
+    }
 }

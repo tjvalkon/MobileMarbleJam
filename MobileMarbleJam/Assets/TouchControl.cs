@@ -63,10 +63,9 @@ public class TouchControl : MonoBehaviour {
 		if (Input.touchCount > 0)
 		{
 			for(int i = 0 ; i < Input.touchCount; i++)
-			{
-				
+			{	
 				Touch currentTouch = Input.GetTouch (i);
-					
+                		
 				if (currentTouch.phase == TouchPhase.Moved) {
 					Vector2 v2 = new Vector2 (Camera.main.ScreenToWorldPoint (currentTouch.position).x, Camera.main.ScreenToWorldPoint (currentTouch.position).y);
 					Collider2D hit = Physics2D.OverlapPoint (v2);
@@ -75,12 +74,15 @@ public class TouchControl : MonoBehaviour {
 						{
 							hit.GetComponent<ButtonTile>().TouchButton();
 						}
-						// jos osutaan johonkin muuhun kuin nappiin tai reunaan
-						else if (hit != null && hit.GetComponent<ButtonTile>() == null && hit.gameObject.tag != "Boundary")
+                    if (hit != null && hit.GetComponent<StartGameButton>() != null)
+                    {
+                        hit.GetComponent<StartGameButton>().TouchButton();
+                    }
+                    // jos osutaan johonkin muuhun kuin nappiin tai reunaan
+                    else if (hit != null && hit.GetComponent<ButtonTile>() == null && GetComponent<StartGameButton>() == null && hit.gameObject.tag != "Boundary")
 						{
 							//Destroy(hit.gameObject);
                             createTile.CreateTileOnPosition(hit);
-
                     }
 					}
 				}
