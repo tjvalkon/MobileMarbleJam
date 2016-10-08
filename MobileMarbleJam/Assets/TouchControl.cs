@@ -48,13 +48,15 @@ public class TouchControl : MonoBehaviour {
             {
                 hit.GetComponent<ButtonTile>().TouchButton();
             }
-            // jos osutaan johonkin muuhun kuin nappiin
-            else if (hit != null && hit.GetComponent<ButtonTile>() == null && hit.gameObject.tag != "Boundary")
+            if (hit != null && hit.GetComponent<StartGameButton>() != null)
             {
-
-                    Destroy(hit.gameObject);
-                    createTile.CreateTileOnPosition(hit.transform.position);
-
+                hit.GetComponent<StartGameButton>().TouchButton();
+            }
+            // jos osutaan johonkin muuhun kuin nappiin
+            else if (hit != null && hit.GetComponent<ButtonTile>() == null && hit.GetComponent<StartGameButton>() == null && hit.gameObject.tag != "Boundary")
+            {
+                    //Destroy(hit.gameObject);
+                    createTile.CreateTileOnPosition(hit);
             }
         }
 
@@ -76,10 +78,10 @@ public class TouchControl : MonoBehaviour {
 						// jos osutaan johonkin muuhun kuin nappiin tai reunaan
 						else if (hit != null && hit.GetComponent<ButtonTile>() == null && hit.gameObject.tag != "Boundary")
 						{
-							Destroy(hit.gameObject);
-							createTile.CreateTileOnPosition(hit.transform.position);
+							//Destroy(hit.gameObject);
+                            createTile.CreateTileOnPosition(hit);
 
-						}
+                    }
 					}
 				}
 			}

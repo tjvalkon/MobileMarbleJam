@@ -5,9 +5,11 @@ using System.Collections.Generic;
 public class CreateTile : MonoBehaviour {
 
     public GameObject[] tile;
-    int SelectedTile;
-    public enum TileType { Empty, ConcreteWall, ConcreteFloor, Sand, Grass };
+    int selectedTile;
+    public enum TileType { Empty, ConcreteWall, ConcreteFloor, Sand, Magma, Grass, Water, Start, Exit };
     SelectionManager selectionManager;
+    bool startTilePlaced;
+    bool exitTilePlaced;
  
     // Use this for initialization
     void Start () {
@@ -18,21 +20,46 @@ public class CreateTile : MonoBehaviour {
     {
         //Debug.Log(tileType);
         if (tileType == TileType.Empty)
-        { SelectedTile = 0; }
+        { selectedTile = 0; }
         if (tileType == TileType.ConcreteWall)
-        { SelectedTile = 1; }
+        { selectedTile = 1; }
         if (tileType == TileType.ConcreteFloor)
-        { SelectedTile = 2; }
+        { selectedTile = 2; }
         if (tileType == TileType.Sand)
-        { SelectedTile = 3; }
+        { selectedTile = 3; }
+        if (tileType == TileType.Magma)
+        { selectedTile = 4; }
         if (tileType == TileType.Grass)
-        { SelectedTile = 4; }
+        { selectedTile = 5; }
+        if (tileType == TileType.Water)
+        { selectedTile = 6; }
+        if (tileType == TileType.Start)
+        { selectedTile = 7; }
+        if (tileType == TileType.Exit)
+        { selectedTile = 8; }
     }
 
-    public void CreateTileOnPosition(Vector2 position)
+    public void CreateTileOnPosition(Collider2D hit)
     {
-        var newTile = Instantiate(tile[SelectedTile]);
-        newTile.transform.position = position;
+        Destroy(hit.gameObject);
+
+        if (selectedTile == 7 && !startTilePlaced)
+        {
+            var newTile = Instantiate(tile[selectedTile]);
+            newTile.transform.position = hit.transform.position;
+            startTilePlaced = true;
+        }
+        if (selectedTile == 8 && !exitTilePlaced)
+        {
+            var newTile = Instantiate(tile[selectedTile]);
+            newTile.transform.position = hit.transform.position;
+            exitTilePlaced = true;
+        }
+        if (selectedTile != 8 && selectedTile != 7)
+        {
+            var newTile = Instantiate(tile[selectedTile]);
+            newTile.transform.position = hit.transform.position;
+        }
     }
 	
 	// Update is called once per frame

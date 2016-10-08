@@ -1,7 +1,7 @@
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2008
-
-Project("{AE7026C9-8939-B591-8218-55EC631F21C6}") = "MobileMarbleJam", "Assembly-CSharp.csproj", "{7F9C68C6-8903-26E0-3C30-0EEBA485E93F}"
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2015
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileMarbleJam.CSharp", "MobileMarbleJam.CSharp.csproj", "{05669A4D-256D-EDA1-3CF5-96EBA6D645EF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,15 +9,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7F9C68C6-8903-26E0-3C30-0EEBA485E93F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7F9C68C6-8903-26E0-3C30-0EEBA485E93F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7F9C68C6-8903-26E0-3C30-0EEBA485E93F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7F9C68C6-8903-26E0-3C30-0EEBA485E93F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05669A4D-256D-EDA1-3CF5-96EBA6D645EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05669A4D-256D-EDA1-3CF5-96EBA6D645EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05669A4D-256D-EDA1-3CF5-96EBA6D645EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05669A4D-256D-EDA1-3CF5-96EBA6D645EF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal
