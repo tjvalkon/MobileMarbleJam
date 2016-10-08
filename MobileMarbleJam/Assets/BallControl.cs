@@ -11,7 +11,6 @@ public class BallControl : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
         rb = GetComponent<Rigidbody2D>();
-
     }
 
     void MoveBall(Vector2 dir)
