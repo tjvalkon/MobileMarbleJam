@@ -57,7 +57,7 @@ public class TouchControl : MonoBehaviour {
             }
             }
             // jos osutaan johonkin muuhun kuin nappiin
-            else if (hit != null && hit.GetComponent<ButtonTile>() == null && hit.GetComponent<StartGameButton>() == null && hit.gameObject.tag != "Boundary")
+            if (hit != null && hit.GetComponent<ButtonTile>() == null && hit.GetComponent<StartGameButton>() == null && hit.gameObject.tag != "Boundary")
             {
                     //Destroy(hit.gameObject);
                     createTile.CreateTileOnPosition(hit);
@@ -84,6 +84,8 @@ public class TouchControl : MonoBehaviour {
                         hit.GetComponent<StartGameButton>().TouchButton();
                     }
                 }
+
+               /*
                     if (currentTouch.phase == TouchPhase.Moved)
                     {
                         Vector2 v2 = new Vector2(Camera.main.ScreenToWorldPoint(currentTouch.position).x, Camera.main.ScreenToWorldPoint(currentTouch.position).y);
@@ -95,7 +97,7 @@ public class TouchControl : MonoBehaviour {
 							//Destroy(hit.gameObject);
                             createTile.CreateTileOnPosition(hit);
                     }
-					}
+					}*/
 				}
 			}
 

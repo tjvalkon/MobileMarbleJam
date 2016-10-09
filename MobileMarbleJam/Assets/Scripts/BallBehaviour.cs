@@ -12,6 +12,10 @@ public class BallBehaviour : MonoBehaviour {
     bool stageClear;
     int layerMask = 1 << 10 | 1 << 13;
 
+    bool onConcrete;
+    public string ballRollingOnConcrete;
+    public string ballRollingOnConcreteStop;
+
     // Use this for initialization
     void Start () {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
@@ -45,11 +49,23 @@ public class BallBehaviour : MonoBehaviour {
     // Update is called once per frame
 	void FixedUpdate () {
 
+        var ballVelosity = gameObject.GetComponent<Rigidbody2D>().velocity;
+
         if (!ballDropped) { 
         Vector2 position = new Vector2(transform.position.x, transform.position.y); 
         Collider2D hit = Physics2D.OverlapPoint(position, layerMask);
 
-        //Debug.Log(hit);
+            //Debug.Log(hit);
+            if (hit != null && hit.gameObject.tag == ("TileConcrete") && !onConcrete)
+            {
+                onConcrete = true; 
+                Fabric.EventManager.Instance.PostEvent(ballRollingOnConcrete, gameObject);
+            }
+            if (hit != null && hit.gameObject.tag != ("TileConcrete"))
+            {
+                onConcrete = false;
+                Fabric.EventManager.Instance.PostEvent(ballRollingOnConcreteStop, gameObject);
+            }
             if (hit != null && hit.gameObject.tag == ("ExitCircle"))
             {
                 stageClear = true;
