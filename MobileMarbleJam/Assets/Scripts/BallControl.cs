@@ -48,9 +48,11 @@ public class BallControl : MonoBehaviour {
                 MoveBall(dir);
             }
         }
+        
         if (ballDropped)
         {
-            //transform.localScale = transform.localScale * fallSpeed;
+            rb.AddForce(-dir*force/2);
         }
+        
     }
 }
