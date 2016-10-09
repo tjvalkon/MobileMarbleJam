@@ -10,9 +10,9 @@ public class TouchControl : MonoBehaviour {
     SelectionManager selectionManager;
     CreateTile createTile;
 
-	public Vector2 startPos;
-	public Vector2 direction;
-	public bool directionChosen;
+	//public Vector2 startPos;
+	//public Vector2 direction;
+	//public bool directionChosen;
 
     int layerMask = 1 << 12 | 1 << 10;
 
@@ -64,44 +64,32 @@ public class TouchControl : MonoBehaviour {
             }
         }
 
-		if (Input.touchCount > 0)
-		{
-			for(int i = 0 ; i < Input.touchCount; i++)
-			{	
+		if (Input.touchCount > 0) {
+			for (int i = 0; i < Input.touchCount; i++) {	
 				Touch currentTouch = Input.GetTouch (i);
 
-                if (currentTouch.phase == TouchPhase.Began)
-                {
-                    Vector2 v2 = new Vector2(Camera.main.ScreenToWorldPoint(currentTouch.position).x, Camera.main.ScreenToWorldPoint(currentTouch.position).y);
-                    Collider2D hit = Physics2D.OverlapPoint(v2, layerMask);
+				if (currentTouch.phase == TouchPhase.Began) {
+					Vector2 v2 = new Vector2 (Camera.main.ScreenToWorldPoint (currentTouch.position).x, Camera.main.ScreenToWorldPoint (currentTouch.position).y);
+					Collider2D hit = Physics2D.OverlapPoint (v2, layerMask);
 
-                    if (hit != null && hit.GetComponent<ButtonTile>() != null)
-                    {
-                        hit.GetComponent<ButtonTile>().TouchButton();
-                    }
-                    if (hit != null && hit.GetComponent<StartGameButton>() != null)
-                    {
-                        hit.GetComponent<StartGameButton>().TouchButton();
-                    }
-                }
+					if (hit != null && hit.GetComponent<ButtonTile> () != null) {
+						hit.GetComponent<ButtonTile> ().TouchButton ();
+					}
+					if (hit != null && hit.GetComponent<StartGameButton> () != null) {
+						hit.GetComponent<StartGameButton> ().TouchButton ();
+					}
+                
 
-               /*
-                    if (currentTouch.phase == TouchPhase.Moved)
-                    {
-                        Vector2 v2 = new Vector2(Camera.main.ScreenToWorldPoint(currentTouch.position).x, Camera.main.ScreenToWorldPoint(currentTouch.position).y);
-                        Collider2D hit = Physics2D.OverlapPoint(v2, layerMask);
-
-                        // jos osutaan johonkin muuhun kuin nappiin tai reunaan
-                        if (hit != null && hit.GetComponent<ButtonTile>() == null && GetComponent<StartGameButton>() == null && hit.gameObject.tag != "Boundary")
-						{
-							//Destroy(hit.gameObject);
-                            createTile.CreateTileOnPosition(hit);
-                    }
-					}*/
+					// jos osutaan johonkin muuhun kuin nappiin tai reunaan
+					if (hit != null && hit.GetComponent<ButtonTile> () == null && GetComponent<StartGameButton> () == null && hit.gameObject.tag != "Boundary") {
+						//Destroy(hit.gameObject);
+						createTile.CreateTileOnPosition (hit);
+					}
+					
 				}
 			}
 
-		
+		}
 	/*
         //Touch control
 

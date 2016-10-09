@@ -1,9 +1,8 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/TouchControl.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/TouchControl.cs">
     <Files>
-      <File FileName="Assets/TouchControl.cs" Line="62" Column="4" />
-      <File FileName="Assets/BallControl.cs" Line="23" Column="12" />
+      <File FileName="Assets/Scripts/TouchControl.cs" Line="15" Column="4" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

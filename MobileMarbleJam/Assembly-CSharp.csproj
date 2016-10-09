@@ -45,6 +45,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Fabric\Scripts\FabricSpringBoard.cs" />
      <Compile Include="Assets\Scripts\BallBehaviour.cs" />
      <Compile Include="Assets\Scripts\BallControl.cs" />
      <Compile Include="Assets\Scripts\ButtonTile.cs" />
@@ -53,11 +54,15 @@
      <Compile Include="Assets\Scripts\SelectionManager.cs" />
      <Compile Include="Assets\Scripts\StartGameButton.cs" />
      <Compile Include="Assets\Scripts\TouchControl.cs" />
+     <None Include="Assets\Fabric\Readme.txt" />
  <Reference Include="UnityEngine.Networking">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
  </Reference>
  <Reference Include="UnityEngine.UI">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+ </Reference>
+ <Reference Include="Fabric.Core">
+ <HintPath>/Users/tomas/MobileMarbleJam/MobileMarbleJam/Assets/Fabric/Fabric.Core.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
