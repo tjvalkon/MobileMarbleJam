@@ -14,6 +14,8 @@ public class TouchControl : MonoBehaviour {
 	public Vector2 direction;
 	public bool directionChosen;
 
+    int layerMask = 1 << 12 | 1 << 10;
+
     // Use this for initialization
     void Start () {
         selectionManager = GameObject.Find("SelectionManager").GetComponent<SelectionManager>();
@@ -41,9 +43,10 @@ public class TouchControl : MonoBehaviour {
             //position = target;
             //Move(position);
 
-            hit = Physics2D.OverlapPoint(target);
+            hit = Physics2D.OverlapPoint(target, layerMask);
 
             //jos osutaan nappiin
+            //if (Input.GetKeyDown(KeyCode.Mouse0)) { 
             if (hit != null && hit.GetComponent<ButtonTile>() != null)
             {
                 hit.GetComponent<ButtonTile>().TouchButton();
@@ -52,6 +55,7 @@ public class TouchControl : MonoBehaviour {
             {
                 hit.GetComponent<StartGameButton>().TouchButton();
             }
+            //}
             // jos osutaan johonkin muuhun kuin nappiin
             else if (hit != null && hit.GetComponent<ButtonTile>() == null && hit.GetComponent<StartGameButton>() == null && hit.gameObject.tag != "Boundary")
             {
@@ -68,7 +72,7 @@ public class TouchControl : MonoBehaviour {
                 		
 				if (currentTouch.phase == TouchPhase.Moved) {
 					Vector2 v2 = new Vector2 (Camera.main.ScreenToWorldPoint (currentTouch.position).x, Camera.main.ScreenToWorldPoint (currentTouch.position).y);
-					Collider2D hit = Physics2D.OverlapPoint (v2);
+					Collider2D hit = Physics2D.OverlapPoint (v2 , layerMask);
 
 						if (hit != null && hit.GetComponent<ButtonTile>() != null)
 						{

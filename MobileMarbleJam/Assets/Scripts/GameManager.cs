@@ -10,6 +10,7 @@ public class GameManager : MonoBehaviour {
 	void Start () {
         ballBlue = GameObject.Find("BallBlue");
         ballBlue.SetActive(false);
+
         startGameButton = GameObject.Find("StartGameButton");
         startGameButton.SetActive(false);
     }
@@ -33,8 +34,11 @@ public class GameManager : MonoBehaviour {
     public void StartGame()
     {
         var startPosition = GameObject.FindGameObjectWithTag("TileStart").GetComponent<Transform>().position;
+        ballBlue.GetComponent<BallBehaviour>().ResetBall();
+        ballBlue.GetComponent<BallControl>().ResetBall();
         ballBlue.SetActive(true);
         ballBlue.transform.position = startPosition;
+ 
         SetStartGameButtonInactive();
     }
 
