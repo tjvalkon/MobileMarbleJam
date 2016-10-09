@@ -1,0 +1,12 @@
+<linker>
+<assembly fullname="Assembly-CSharp">
+<type fullname="BallBehaviour" preserve="all"/>
+<type fullname="BallControl" preserve="all"/>
+<type fullname="ButtonTile" preserve="all"/>
+<type fullname="CreateTile" preserve="all"/>
+<type fullname="GameManager" preserve="all"/>
+<type fullname="SelectionManager" preserve="all"/>
+<type fullname="StartGameButton" preserve="all"/>
+<type fullname="TouchControl" preserve="all"/>
+</assembly>
+</linker>
