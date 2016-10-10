@@ -3,47 +3,25 @@ using System.Collections;
 
 public class StartGameButton : MonoBehaviour {
 
-    bool buttonSelected;
+    //bool buttonSelected;
     GameManager gameManager;
-    public Color selectedColor;
-    SpriteRenderer spriteRenderer;
-    Color defaultColor;
+    public enum buttonType { StartGame, NewGameArea }
+    public buttonType selectedButtonType;
 
     // Use this for initialization
     void Start () {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        defaultColor = spriteRenderer.color;
-        buttonSelected = false;
+
 	}
 
     public void TouchButton()
     {
-        if (!buttonSelected)
+        if (selectedButtonType == buttonType.StartGame) {
+            gameManager.StartGame();
+        } else if (selectedButtonType == buttonType.NewGameArea)
         {
-            SelectButton();
-        }
-        else if (buttonSelected)
-        {
-            DeSelectButton();
+            gameManager.NewGameArea();
         }
     }
 
-    public void SelectButton()
-    {
-        buttonSelected = true;
-        //spriteRenderer.color = selectedColor;
-        gameManager.StartGame();
-    }
-
-    public void DeSelectButton()
-    {
-        buttonSelected = false;
-        //spriteRenderer.color = defaultColor;
-    }
-
-    // Update is called once per frame
-    void Update () {
-	
-	}
 }

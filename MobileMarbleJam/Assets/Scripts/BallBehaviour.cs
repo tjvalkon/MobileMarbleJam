@@ -12,7 +12,7 @@ public class BallBehaviour : MonoBehaviour {
     Color originalColor;
     public float fallSpeed = 0.9f;
     //Collider2D collider2D;
-    public enum ballStatus { dropped, burned, water, disappered , stageClear, ok}
+    public enum ballStatus { dropped, burned, water, disappeared, stageClear, ok}
     ballStatus curretBallStatus;
     //bool ballDropped;
     //bool stageClear;
@@ -113,6 +113,7 @@ public class BallBehaviour : MonoBehaviour {
             spriteRenderer.sortingLayerName = ("BehindGameTiles");
             gameObject.GetComponent<Collider2D>().enabled = false;
             transform.localScale = transform.localScale * fallSpeed;
+            gameManager.stopTime(false);
             Invoke("EndGame", endTime);
         }
         if (curretBallStatus == ballStatus.burned)
@@ -122,7 +123,8 @@ public class BallBehaviour : MonoBehaviour {
             Instantiate(BurnParticles,transform.position, Quaternion.identity);
             ballControl.BallBurned();
             spriteRenderer.color = disappear;
-            curretBallStatus = ballStatus.disappered;
+            curretBallStatus = ballStatus.disappeared;
+            gameManager.stopTime(false);
             Invoke("EndGame", endTime);
         }
         if (curretBallStatus == ballStatus.water)
@@ -132,7 +134,8 @@ public class BallBehaviour : MonoBehaviour {
             Instantiate(WaterParticles, transform.position, Quaternion.identity);
             ballControl.BallBurned();
             spriteRenderer.color = disappear;
-            curretBallStatus = ballStatus.disappered;
+            curretBallStatus = ballStatus.disappeared;
+            gameManager.stopTime(false);
             Invoke("EndGame", endTime);
         }
         if (curretBallStatus == ballStatus.stageClear)
@@ -143,7 +146,8 @@ public class BallBehaviour : MonoBehaviour {
             spriteRenderer.color = disappear;
             gameObject.GetComponent<Collider2D>().enabled = false;
             transform.localScale = transform.localScale * fallSpeed;
-            curretBallStatus = ballStatus.disappered;
+            curretBallStatus = ballStatus.disappeared;
+            gameManager.stopTime(true);
             Invoke("EndGame", endTime);
         }
 
