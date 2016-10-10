@@ -13,8 +13,8 @@ public class BallBehaviour : MonoBehaviour {
     int layerMask = 1 << 10 | 1 << 13;
 
     bool onConcrete;
-    public string ballRollingOnConcrete;
-    public string ballRollingOnConcreteStop;
+    public string ballRollingSwitch;
+    //public string ballRollingOnConcreteStop;
 
     // Use this for initialization
     void Start () {
@@ -25,46 +25,37 @@ public class BallBehaviour : MonoBehaviour {
 
     public void ResetBall()
     {
+        Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.PlaySound, "BallRollingOnConcrete");
         ballDropped = false;
         stageClear = false;
         spriteRenderer.sortingLayerName = ("Ball");
         gameObject.GetComponent<Collider2D>().enabled = true;
         transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
     }
-	/*
-    void OnTriggerEnter2D(Collider2D col)
-    {
-        if (col.gameObject.tag == ("TileExit"))
-        {
-            gameManager.EndGame();
-        }
-        if (col.gameObject.tag == ("TileEmpty"))
-        {
-            gameManager.EndGame();
-        }
-
-    }
-    */
     
     // Update is called once per frame
 	void FixedUpdate () {
 
         var ballVelosity = gameObject.GetComponent<Rigidbody2D>().velocity;
+        var audioVolume = (Mathf.Abs(ballVelosity.x) + Mathf.Abs(ballVelosity.y)) / 2;
+        audioVolume = Mathf.Clamp(audioVolume, 0f, 5f) / 5;
+        //var audioPitch = audioVolume
+
+        Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetVolume, audioVolume);
+        Debug.Log(audioVolume);
 
         if (!ballDropped) { 
         Vector2 position = new Vector2(transform.position.x, transform.position.y); 
         Collider2D hit = Physics2D.OverlapPoint(position, layerMask);
 
             //Debug.Log(hit);
-            if (hit != null && hit.gameObject.tag == ("TileConcrete") && !onConcrete)
+            if (hit != null && hit.gameObject.tag == ("TileConcrete"))
             {
-                onConcrete = true; 
-                Fabric.EventManager.Instance.PostEvent(ballRollingOnConcrete, gameObject);
+                Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetSwitch, "BallRollingOnConcrete");
             }
-            if (hit != null && hit.gameObject.tag != ("TileConcrete"))
+            if (hit != null && hit.gameObject.tag == ("TileGravel"))
             {
-                onConcrete = false;
-                Fabric.EventManager.Instance.PostEvent(ballRollingOnConcreteStop, gameObject);
+                Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetSwitch, "BallRollingOnGravel");
             }
             if (hit != null && hit.gameObject.tag == ("ExitCircle"))
             {

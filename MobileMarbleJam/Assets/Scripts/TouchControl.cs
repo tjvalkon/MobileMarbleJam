@@ -71,9 +71,8 @@ public class TouchControl : MonoBehaviour {
                 Vector2 v2 = new Vector2(Camera.main.ScreenToWorldPoint(currentTouch.position).x, Camera.main.ScreenToWorldPoint(currentTouch.position).y);
                 Collider2D hit = Physics2D.OverlapPoint(v2, layerMask);
 
-                if (currentTouch.phase == TouchPhase.Began)
+                if (currentTouch.phase == TouchPhase.Began || currentTouch.phase == TouchPhase.Stationary)
                 {
-
                     if (hit != null && hit.GetComponent<ButtonTile>() != null)
                     {
                         hit.GetComponent<ButtonTile>().TouchButton();
