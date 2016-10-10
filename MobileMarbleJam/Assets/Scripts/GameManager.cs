@@ -35,7 +35,7 @@ public class GameManager : MonoBehaviour {
         var startPosition = GameObject.FindGameObjectWithTag("TileStart").GetComponent<Transform>().position;
         ballBlue.SetActive(true);
         ballBlue.GetComponent<BallBehaviour>().ResetBall();
-        ballBlue.GetComponent<BallControl>().ResetBall(); 
+        //ballBlue.GetComponent<BallControl>().ResetBall(); 
         ballBlue.transform.position = startPosition;
         SetStartGameButtonInactive();
     }

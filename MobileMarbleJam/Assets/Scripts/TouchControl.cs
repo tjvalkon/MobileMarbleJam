@@ -50,17 +50,19 @@ public class TouchControl : MonoBehaviour {
             if (hit != null && hit.GetComponent<ButtonTile>() != null)
             {
                 hit.GetComponent<ButtonTile>().TouchButton();
+                Fabric.EventManager.Instance.PostEvent("Touch/Button/Click", Fabric.EventAction.PlaySound);
             }
             if (hit != null && hit.GetComponent<StartGameButton>() != null)
             {
                 hit.GetComponent<StartGameButton>().TouchButton();
+                Fabric.EventManager.Instance.PostEvent("Touch/Button/Click", Fabric.EventAction.PlaySound);
             }
             }
             // jos osutaan johonkin muuhun kuin nappiin
             if (hit != null && hit.GetComponent<ButtonTile>() == null && hit.GetComponent<StartGameButton>() == null && hit.gameObject.tag != "Boundary")
             {
-                    //Destroy(hit.gameObject);
-                    createTile.CreateTileOnPosition(hit);
+                //Fabric.EventManager.Instance.PostEvent("Touch/Create/Tile", Fabric.EventAction.PlaySound);
+                createTile.CreateTileOnPosition(hit);
             }
         }
 
@@ -71,21 +73,24 @@ public class TouchControl : MonoBehaviour {
                 Vector2 v2 = new Vector2(Camera.main.ScreenToWorldPoint(currentTouch.position).x, Camera.main.ScreenToWorldPoint(currentTouch.position).y);
                 Collider2D hit = Physics2D.OverlapPoint(v2, layerMask);
 
-                if (currentTouch.phase == TouchPhase.Began)
+                if (currentTouch.phase == TouchPhase.Began || currentTouch.phase == TouchPhase.Moved)
                 {
                     if (hit != null && hit.GetComponent<ButtonTile>() != null)
                     {
                         hit.GetComponent<ButtonTile>().TouchButton();
+                        Fabric.EventManager.Instance.PostEvent("Touch/Button/Click", Fabric.EventAction.PlaySound);
                     }
                     else if (hit != null && hit.GetComponent<StartGameButton>() != null)
                     {
                         hit.GetComponent<StartGameButton>().TouchButton();
+                        Fabric.EventManager.Instance.PostEvent("Touch/Button/Click", Fabric.EventAction.PlaySound);
                     }
-                }
-                if (currentTouch.phase == TouchPhase.Moved || currentTouch.phase == TouchPhase.Began)
-                {
+                //}
+                //if (currentTouch.phase == TouchPhase.Moved || currentTouch.phase == TouchPhase.Began)
+                //{
                     if (hit != null && hit.GetComponent<ButtonTile>() == null && GetComponent<StartGameButton>() == null && hit.gameObject.tag != "Boundary")
                     {
+                        //Fabric.EventManager.Instance.PostEvent("Touch/Create/Tile", Fabric.EventAction.PlaySound);
                         createTile.CreateTileOnPosition(hit);
                     }
                 }
