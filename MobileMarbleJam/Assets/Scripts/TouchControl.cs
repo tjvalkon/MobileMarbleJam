@@ -71,7 +71,7 @@ public class TouchControl : MonoBehaviour {
                 Vector2 v2 = new Vector2(Camera.main.ScreenToWorldPoint(currentTouch.position).x, Camera.main.ScreenToWorldPoint(currentTouch.position).y);
                 Collider2D hit = Physics2D.OverlapPoint(v2, layerMask);
 
-                if (currentTouch.phase == TouchPhase.Began || currentTouch.phase == TouchPhase.Stationary)
+                if (currentTouch.phase == TouchPhase.Began)
                 {
                     if (hit != null && hit.GetComponent<ButtonTile>() != null)
                     {
@@ -86,7 +86,6 @@ public class TouchControl : MonoBehaviour {
                 {
                     if (hit != null && hit.GetComponent<ButtonTile>() == null && GetComponent<StartGameButton>() == null && hit.gameObject.tag != "Boundary")
                     {
-                        //Destroy(hit.gameObject);
                         createTile.CreateTileOnPosition(hit);
                     }
                 }

@@ -3,16 +3,26 @@ using System.Collections;
 
 public class BallBehaviour : MonoBehaviour {
 
+    public GameObject BurnParticles;
+    public GameObject WaterParticles;
     GameManager gameManager;
     BallControl ballControl;
     SpriteRenderer spriteRenderer;
+    public Color disappear;
+    Color originalColor;
     public float fallSpeed = 0.9f;
     //Collider2D collider2D;
-    bool ballDropped;
-    bool stageClear;
+    public enum ballStatus { dropped, burned, water, disappered , stageClear, ok}
+    ballStatus curretBallStatus;
+    //bool ballDropped;
+    //bool stageClear;
     int layerMask = 1 << 10 | 1 << 13;
+    Vector2 ballVelosity;
+    float audioVolume;
 
-    bool onConcrete;
+    public float endTime = 5f;
+
+    //bool onConcrete;
     public string ballRollingSwitch;
     //public string ballRollingOnConcreteStop;
 
@@ -21,30 +31,41 @@ public class BallBehaviour : MonoBehaviour {
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         ballControl = GetComponent<BallControl>();
         spriteRenderer = GetComponent<SpriteRenderer>();
+        originalColor = spriteRenderer.color;
     }
 
     public void ResetBall()
     {
-        Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.PlaySound, "BallRollingOnConcrete");
-        ballDropped = false;
-        stageClear = false;
-        spriteRenderer.sortingLayerName = ("Ball");
+        audioVolume = 0f;
+        Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetVolume, audioVolume);
+        Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.PlaySound);
+        Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetSwitch, "BallRollingOnConcrete");
+
         gameObject.GetComponent<Collider2D>().enabled = true;
+        curretBallStatus = ballStatus.ok;
+        spriteRenderer.color = originalColor;
+        //ballDropped = false;
+        //stageClear = false;
+        spriteRenderer.sortingLayerName = ("Ball");    
         transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+    }
+
+    void EndGame()
+    {
+        gameManager.EndGame();
     }
     
     // Update is called once per frame
 	void FixedUpdate () {
-
-        var ballVelosity = gameObject.GetComponent<Rigidbody2D>().velocity;
-        var audioVolume = (Mathf.Abs(ballVelosity.x) + Mathf.Abs(ballVelosity.y)) / 2;
+        if (curretBallStatus == ballStatus.ok)
+        {
+        //Audio volume
+        ballVelosity = gameObject.GetComponent<Rigidbody2D>().velocity;
+        audioVolume = (Mathf.Abs(ballVelosity.x) + Mathf.Abs(ballVelosity.y)) / 2;
         audioVolume = Mathf.Clamp(audioVolume, 0f, 5f) / 5;
-        //var audioPitch = audioVolume
-
         Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetVolume, audioVolume);
-        Debug.Log(audioVolume);
 
-        if (!ballDropped) { 
+        //Check overlapping
         Vector2 position = new Vector2(transform.position.x, transform.position.y); 
         Collider2D hit = Physics2D.OverlapPoint(position, layerMask);
 
@@ -57,39 +78,68 @@ public class BallBehaviour : MonoBehaviour {
             {
                 Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetSwitch, "BallRollingOnGravel");
             }
+            if (hit != null && hit.gameObject.tag == ("TileGrass"))
+            {
+                Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetSwitch, "BallRollingOnGrass");
+            }
             if (hit != null && hit.gameObject.tag == ("ExitCircle"))
             {
-                stageClear = true;
+                curretBallStatus = ballStatus.stageClear;
             }
             if (hit != null && hit.gameObject.tag == ("TileEmpty"))
             {
-                ballDropped = true;
+                curretBallStatus = ballStatus.dropped;
+            }
+            if (hit != null && hit.gameObject.tag == ("TileMagma"))
+            {
+                curretBallStatus = ballStatus.burned;
+            }
+            if (hit != null && hit.gameObject.tag == ("TileWater"))
+            {
+                curretBallStatus = ballStatus.water;
             }
         }
 
-        if (ballDropped)
+        if (curretBallStatus == ballStatus.dropped)
         {
+            Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetVolume, 1f);
+            Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetSwitch, "BallFall");
             ballControl.BallDropped();
             spriteRenderer.sortingLayerName = ("BehindGameTiles");
             gameObject.GetComponent<Collider2D>().enabled = false;
             transform.localScale = transform.localScale * fallSpeed;
-            if (transform.localScale.x < 0.001f)
-            {
-                gameManager.EndGame();
-            }
-
+            Invoke("EndGame", endTime);
         }
-        if (stageClear)
+        if (curretBallStatus == ballStatus.burned)
         {
-            ballControl.BallDropped();
-            //spriteRenderer.sortingLayerName = ("BehindGameTiles");
+            Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetVolume, 1f);
+            Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetSwitch, "BallBurn");
+            Instantiate(BurnParticles,transform.position, Quaternion.identity);
+            ballControl.BallBurned();
+            spriteRenderer.color = disappear;
+            curretBallStatus = ballStatus.disappered;
+            Invoke("EndGame", endTime);
+        }
+        if (curretBallStatus == ballStatus.water)
+        {
+            Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetVolume, 1f);
+            Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetSwitch, "BallBurn");
+            Instantiate(WaterParticles, transform.position, Quaternion.identity);
+            ballControl.BallBurned();
+            spriteRenderer.color = disappear;
+            curretBallStatus = ballStatus.disappered;
+            Invoke("EndGame", endTime);
+        }
+        if (curretBallStatus == ballStatus.stageClear)
+        {
+            Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetVolume, 1f);
+            Fabric.EventManager.Instance.PostEvent(ballRollingSwitch, Fabric.EventAction.SetSwitch, "BallFall");
+            ballControl.BallBurned();
+            spriteRenderer.color = disappear;
             gameObject.GetComponent<Collider2D>().enabled = false;
             transform.localScale = transform.localScale * fallSpeed;
-            if (transform.localScale.x < 0.001f)
-            {
-                gameManager.EndGame();
-            }
-
+            curretBallStatus = ballStatus.disappered;
+            Invoke("EndGame", endTime);
         }
 
     }

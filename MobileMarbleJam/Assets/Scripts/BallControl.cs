@@ -8,7 +8,9 @@ public class BallControl : MonoBehaviour {
     //public float fallSpeed = 0.9f;
     Rigidbody2D rb;
     Vector2 dir;
-    bool ballDropped;
+    BallBehaviour.ballStatus currentBallStatus;
+
+    //bool ballDropped;
 
 	// Use this for initialization
 	void Start () {
@@ -22,18 +24,26 @@ public class BallControl : MonoBehaviour {
 
     public void ResetBall()
     {
-        ballDropped = false;
+        currentBallStatus = BallBehaviour.ballStatus.ok;
+        //ballDropped = false;
     }
 
     public void BallDropped()
     {
-        ballDropped = true;
+        currentBallStatus = BallBehaviour.ballStatus.dropped;
+        //ballDropped = true;
     }
 
-	// Update is called once per frame
-	void FixedUpdate () {
+    public void BallBurned()
+    {
+        currentBallStatus = BallBehaviour.ballStatus.burned;
+        //ballDropped = true;
+    }
 
-        if (!useKeyboard && !ballDropped)
+    // Update is called once per frame
+    void FixedUpdate () {
+
+        if (!useKeyboard && currentBallStatus == BallBehaviour.ballStatus.ok)
         {
             dir = new Vector2 (Input.acceleration.x, Input.acceleration.y);
             if (Input.acceleration.x != 0 || Input.acceleration.y != 0)
@@ -41,7 +51,7 @@ public class BallControl : MonoBehaviour {
                 MoveBall(dir);
             }
         }
-        if (useKeyboard && !ballDropped) { 
+        if (useKeyboard && currentBallStatus == BallBehaviour.ballStatus.ok) { 
         dir = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             if (Input.GetAxis("Horizontal") !=0 || Input.GetAxis("Vertical") != 0)
             {
@@ -49,10 +59,14 @@ public class BallControl : MonoBehaviour {
             }
         }
         
-        if (ballDropped)
+        if (currentBallStatus == BallBehaviour.ballStatus.dropped)
         {
             rb.AddForce(-dir*force/2);
         }
-        
+        if (currentBallStatus == BallBehaviour.ballStatus.burned)
+        {
+            rb.velocity = new Vector2 (0,0);
+        }
+
     }
 }
