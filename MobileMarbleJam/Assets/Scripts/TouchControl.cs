@@ -4,7 +4,7 @@ using System.Collections;
 public class TouchControl : MonoBehaviour {
 
     Vector2 target;
-    Vector2 position;
+    //Vector2 position;
     public float speed = 2f;
     Collider2D hit;
     SelectionManager selectionManager;
@@ -20,10 +20,10 @@ public class TouchControl : MonoBehaviour {
     void Start () {
         selectionManager = GameObject.Find("SelectionManager").GetComponent<SelectionManager>();
         createTile = GameObject.Find("CreateTile").GetComponent<CreateTile>();
-        target = transform.position;
-        position = target;
+        //target = transform.position;
+        //position = target;
     }
-
+    /*
     void Move(Vector2 position)
     {
         transform.position = position;
@@ -33,7 +33,7 @@ public class TouchControl : MonoBehaviour {
     {
         return position;
     }
-
+    */
     void FixedUpdate () {
 
         //Mouse control

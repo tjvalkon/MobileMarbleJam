@@ -36,7 +36,7 @@ public class BallBehaviour : MonoBehaviour {
 
     void OnCollision2DEnter()
     {
-        Fabric.EventManager.Instance.PostEvent("Ball/Hit/Wall/", Fabric.EventAction.SetVolume, audioVolume);
+        //Fabric.EventManager.Instance.PostEvent("Ball/Hit/Wall/", Fabric.EventAction.SetVolume, 0.5f);
         Fabric.EventManager.Instance.PostEvent("Ball/Hit/Wall/", Fabric.EventAction.PlaySound);
     }
 

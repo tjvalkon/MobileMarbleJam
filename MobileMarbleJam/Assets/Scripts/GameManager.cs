@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour {
         tileButtons = GameObject.Find("TileButtons");
         newGameAreaButton = GameObject.Find("NewGameAreaButton");
         ballBlue = GameObject.Find("BallBlue");
+
         NewGameArea();
         ClearTimerTexts();
         gameRunning = false;
@@ -42,12 +43,13 @@ public class GameManager : MonoBehaviour {
     }
 
     public void NewGameArea()
-    {
-        currentTime = 0;
+    {     
         ClearTimerTexts();
         tileButtons.SetActive(true);
-        bestTime = 10000;
         newGameAreaButton.SetActive(false);
+
+        currentTime = 0;
+        bestTime = 10000;
     }
 
     public void EndGame()
@@ -75,23 +77,25 @@ public class GameManager : MonoBehaviour {
         startGameButton.SetActive(false);
     }
 
-
-
     void UpdateTimer()
     {
         currentTimeText.text = "" + currentTime.ToString(timerFormat);
     }
 
+    void ResetBall()
+    {
+        var startPosition = GameObject.FindGameObjectWithTag("TileStart").GetComponent<Transform>().position;
+        ballBlue.SetActive(true);
+        ballBlue.GetComponent<BallBehaviour>().ResetBall();
+        ballBlue.transform.position = startPosition;
+    }
 
     public void StartGame()
     {
         newGameAreaButton.SetActive(false);
         tileButtons.SetActive(false);
         currentTime = 0;
-        var startPosition = GameObject.FindGameObjectWithTag("TileStart").GetComponent<Transform>().position;
-        ballBlue.SetActive(true);
-        ballBlue.GetComponent<BallBehaviour>().ResetBall();
-        ballBlue.transform.position = startPosition;
+        ResetBall();
         SetStartGameButtonInactive();
         gameRunning = true;
     }
