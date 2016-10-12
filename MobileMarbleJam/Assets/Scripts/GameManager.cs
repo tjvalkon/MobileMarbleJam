@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour {
     GameObject startGameButton;
     GameObject newGameAreaButton;
     GameObject tileButtons;
+    TouchControl touchControl;
     public Text currentTimeText;
     float currentTime;
     public Text bestTimeText;
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        touchControl = GameObject.Find("TouchControls").GetComponent<TouchControl>();
         startGameButton = GameObject.Find("StartGameButton");
         tileButtons = GameObject.Find("TileButtons");
         newGameAreaButton = GameObject.Find("NewGameAreaButton");
