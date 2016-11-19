@@ -71,7 +71,7 @@ public class TouchControl : MonoBehaviour {
 
 		if (Input.touchCount > 0) {
 			//for (int i = 0; i < Input.touchCount; i++) {	
-				Touch currentTouch = Input.GetTouch(i);
+				Touch currentTouch = Input.GetTouch(0);
 
             Vector2 v2 = new Vector2(Camera.main.ScreenToWorldPoint(currentTouch.position).x, Camera.main.ScreenToWorldPoint(currentTouch.position).y);
             Collider2D hit = Physics2D.OverlapPoint(v2, layerMask);
